@@ -118,11 +118,11 @@ create table EMPLOYEE
    EMPLOYEE_ID          varchar(32) not null,
    POST_ID              varchar(32),
    DEPARTMENT_ID        varchar(32),
-   SEX_ID               varchar(32),
-   LOGIN                varchar(128),
-   PASSWORD             varchar(128),
+   SEX_ID               varchar(32) not null,
+   LOGIN                varchar(128) not null,
+   PASSWORD             varchar(128) not null,
    EMPLOYEE_NAME        varchar(128) not null,
-   TELEPHONE            varchar(128),
+   TELEPHONE            varchar(128) not null,
    IDENTIFY_CARD_NUMBER varchar(24),
    primary key (EMPLOYEE_ID)
 );
