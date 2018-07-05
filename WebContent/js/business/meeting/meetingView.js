@@ -39,6 +39,14 @@ var meetingView = function () {
                         $('#meetingPresenter').select2('val',tmpJsonObject.meetingPresenter);
                         if (tmpJsonObject.isSendMessageNotice == 1)
                             $('input[name="isSendMessageNotice"]').prop('checked',true);
+
+                        if (tmpJsonObject.messageNoticeTime == "" || tmpJsonObject.messageNoticeTime == null) {
+                            $('input[name="noticeTypeId"]').eq("0").prop("checked", "checked");
+                        } else {
+                            $('input[name="noticeTypeId"]').eq("1").prop("checked", "checked");
+                        }
+                        $('input[name="noticeTypeId"]').attr('disabled',true);
+
                         if (tmpJsonObject.meetingFileList.length > 0)
                             meetingFilesTable.fnAddData(tmpJsonObject.meetingFileList);
                         if (tmpJsonObject.meetingRecordFileList.length > 0)

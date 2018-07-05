@@ -228,7 +228,7 @@ create table MESSAGE_SEND_CENTER
    MESSAGE_SEND_CENTER_ID varchar(32) not null,
    MEETING_ID           varchar(32),
    MESSAGE_SEND_STATE_ID varchar(32),
-   SEND_DATETIME        datetime not null,
+   SEND_DATETIME        datetime,
    SEND_MESSAGE         text not null,
    IS_ACTIVE            tinyint not null comment '0：无效
             1：有效

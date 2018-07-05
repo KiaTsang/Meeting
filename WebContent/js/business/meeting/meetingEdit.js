@@ -36,12 +36,31 @@ var meetingEdit = function () {
                     success:function(result){
                         var tmpJsonObject = JSON.parse(result);
                         DomUtil.setFormElementsValueViaJSONObject('createMeetingForm',tmpJsonObject);
-                        if (tmpJsonObject.isSendMessageNotice == 1)
+
+                        // 初始化复选框
+                        if (tmpJsonObject.isSendMessageNotice == 1) {
                             $('input[name="isSendMessageNotice"]').prop('checked',true);
+                            $('input[name="noticeTypeId"]').attr('disabled',false);
+                            $("#messageNoticeTime").attr('disabled',false);
+                        } else {
+                            $('input[name="isSendMessageNotice"]').prop('checked',false);
+                            $('input[name="noticeTypeId"]').attr('disabled',true);
+                            $("#messageNoticeTime").attr('disabled',true);
+                        }
+
+                        // 初始化radio
+                        if (tmpJsonObject.messageNoticeTime == "" || tmpJsonObject.messageNoticeTime == null) {
+                            $('input[name="noticeTypeId"]').eq("0").prop("checked", "checked");
+                            $("#messageNoticeTime").attr('disabled',true);
+                        } else {
+                            $('input[name="noticeTypeId"]').eq("1").prop("checked", "checked");
+                        }
+
                         // 初始化下拉框
                         $('#meetingPresenter').select2('val',tmpJsonObject.meetingPresenter);
                         $('#meetingRoomId').select2('val',tmpJsonObject.meetingRoomId);
                         $('#meetingCreatorDepartmentId').select2('val',tmpJsonObject.meetingCreatorDepartmentId);
+
                         // 初始化材料表格
                         if (tmpJsonObject.meetingFileList.length > 0)
                             meetingFilesTable.fnAddData(tmpJsonObject.meetingFileList);
@@ -226,9 +245,9 @@ var meetingEdit = function () {
                 var meetingId = $('input[name="meetingId"]').val();
                 var isSendMessageNotice = $('input[name="isSendMessageNotice"]').prop('checked');
                 var addData = DomUtil.getJSONObjectFromForm('createMeetingForm', null);
-                if (isSendMessageNotice && addData.messageNoticeTime == '') {
+                if (isSendMessageNotice && $('input[name="noticeTypeId"]').val() == "1" && addData.messageNoticeTime == '') {
                     $.pnotify({
-                        text: '短信提醒时间不能为空'
+                        text: '指定提醒时间不能为空'
                     });
                 } else {
                     // 添加会议记录附件表格记录
@@ -910,14 +929,47 @@ var meetingEdit = function () {
         });
     }
 
+    var handleRadio = function () {
+        // 初始化radio
+        $('#createMeetingForm :radio').each(function(){
+            if(this.checked){
+                if ( this.value == "0")
+                    $("#messageNoticeTime").attr('disabled',true);
+                else
+                    $("#messageNoticeTime").attr('disabled',false);
+            }
+        });
+
+        $('input[name="noticeTypeId"]').on('click', function (e) {
+           if(this.value == "0") {
+               $("#messageNoticeTime").val("");
+               $("#messageNoticeTime").attr('disabled',true);
+           } else {
+               $("#messageNoticeTime").attr('disabled',false);
+           }
+        });
+
+        $('input[name="isSendMessageNotice"]').on('click', function (e) {
+            if (this.checked) {
+                $('input[name="noticeTypeId"]').attr('disabled',false);
+                $("#messageNoticeTime").attr('disabled',false);
+            } else {
+                $('input[name="noticeTypeId"]').attr('disabled',true);
+                $("#messageNoticeTime").attr('disabled',true);
+            }
+        });
+    }
+
     return {
         init: function () {
+
             handleSelect2();
             handleTree();
             handleForm();
             handleDatePickers();
             handleTable();
             handleButton();
+            handleRadio();
             handlePageInfo();
         }
     };

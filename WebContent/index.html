@@ -19,7 +19,90 @@
     <link rel="stylesheet" id="theme" href="css/destop/themes/blue.css" />
 </head>
 <body>
+<header id="header" >
+    <div class="navbar navbar-default" id="navbar" style="background: #0763bd;border-radius: 0px;border-color: #0763bd;">
+        <div class="navbar-container" id="navbar-container">
+            <div class="navbar-header pull-left">
+                <a href="#" class="navbar-brand">
+                    <!--<img alt="会议管理系统" width="250px" src="../../img/logo1_white-.png" class="txt-color-white" style="margin-top:-5px;">-->
+                    <span style="color: white">阳江石油综合办公平台</span>
+                </a>
 
+            </div>
+            <div class="navbar-header pull-right" role="navigation" >
+                <ul class="nav ace-nav">
+                    <li class="light-blue">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <img class="nav-user-photo" src="img/user48x48.png" style="height: 35px"/>
+                                                <span class="user-info">
+                                                     <span style="color: white" id="loginUser"></span>
+                                                </span>
+                            <i class="fa fa-sort-down"></i>
+                        </a>
+                        <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#modifyPasswordModal">
+                                    <i class="fa fa-lg fa-plus"></i>更改密码
+                                </a>
+                            </li>
+
+                            <li class="divider"></li>
+                            <li>
+                                <a id="logout" href="login.html">
+                                    <i class="fa fa-power-off"></i>退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modifyPasswordModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+                </div>
+                <form id="password-form" method="post" class="validate-form client-form">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div>
+                                        <label> 旧  密  码</label>
+                                        <input name="password" type="password" class="form-control required"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div>
+                                        <label> 新  密  码</label>
+                                        <input name="newPassword" type="password" class="form-control required"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div>
+                                        <label> 确认密码</label>
+                                        <input name="passwordConfirm" type="password" class="form-control required"/>
+                                    </div>
+                                </div>
+                                <label class="col-sm-12 text-danger text-align-left control-label" style="font-weight:bold;" id="passwordErrorTips">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btn-modifiedPassword" class="btn btn-primary">提交</button>
+                        <button type="button" id="btn-cancel" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
 <div class="nav-bar">
     <div class="start">
         <a href="#" class="start-menu" id="full"><i class="fa fa-bars"></i></a>
@@ -80,10 +163,37 @@
 <script src="js/plugin/destop/jquery.fullscreen.js"></script>
 <script src="js/plugin/destop/clock.js"></script>
 <script src="js/plugin/destop/desktop.js"></script>
+<script src="js/app.js"></script>
+<script src="js/login.js"></script>
+<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
+<script src="js/plugin/jquery-blockui/jquery.blockUI.js"></script>
+<script src="js/util/DomUtil.js"></script>
+<script src="js/util/StringUtil.js"></script>
+<script src="js/util/MyJsonUtil.js"></script>
+<script src="js/core/globalInfo.js"></script>
+
 </body>
 <script type="text/javascript">
     jQuery(document).ready(function() {
+        app.init();
+        login.initTop();
         var tmpLoginDTO= JSON.parse(sessionStorage.getItem("LoginDTO"));
+        if (tmpLoginDTO != null) {
+            var obj = [];
+            obj.push(StringUtil.decorateRequestData('String', tmpLoginDTO.employeeId));
+            //获取当前用户任务节点
+            $.ajax({
+                type:'post',
+                dataType:"json",
+                async: false,
+                url:SMController.getUrl({controller:'controllerProxy',method:'callBack'
+                    ,proxyClass:'securityController',proxyMethod:'getEmployeeDetailInfoByEmployeeId',jsonString:MyJsonUtil.obj2str(obj)},"/Meeting/"),
+                success:function(result){
+                    sessionStorage.removeItem("EmployeeDTO");
+                    sessionStorage.setItem("EmployeeDTO", JSON.stringify(result));
+                }
+            });
+        }
         if (tmpLoginDTO == null)
             window.location.href = 'login.html';
     });

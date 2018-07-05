@@ -179,12 +179,14 @@ var login = function () {
         // 初始化用户权限
         function intSecurity() {
             var tmpEmployeeDTO = JSON.parse(sessionStorage.getItem("EmployeeDTO"));
-            var tmpSecurityCodeList = tmpEmployeeDTO.securityCodeList;
-            // 设置按钮权限
-            $("span[data-security-code],a[data-security-code]").each(function(i, v) {
-                if (tmpSecurityCodeList.indexOf(""+$(this).data('securityCode')) == -1)
-                    $(this).hide();
-            });
+            if (tmpEmployeeDTO != null) {
+                var tmpSecurityCodeList = tmpEmployeeDTO.securityCodeList;
+                // 设置按钮权限
+                $("span[data-security-code],a[data-security-code]").each(function(i, v) {
+                    if (tmpSecurityCodeList.indexOf(""+$(this).data('securityCode')) == -1)
+                        $(this).hide();
+                });
+            }
         }
 
         //为表单提供验证规则
@@ -247,7 +249,7 @@ var login = function () {
                                 proxyClass: 'securityController',
                                 proxyMethod: 'updateEmployeePassword',
                                 jsonString: MyJsonUtil.obj2str(obj)
-                            }),
+                            },"/Meeting/"),
                             dataType: "json",
                             beforeSend: function(jqXHR, settings) {
                                 $.blockUI({
@@ -262,10 +264,14 @@ var login = function () {
                                     $("#processStatus").text("密码修改成功，正在返回登陆页面重新登录...");
                                     setTimeout(function(){
                                         $.unblockUI();
+//                                        $('#modifyPasswordModal').modal('hide');
+//                                        $('input[name="password"]').val('');
+//                                        $('input[name="newPassword"]').val('');
+//                                        $('input[name="passwordConfirm"]').val('');
                                         // 将所有保存的数据删除
                                         localStorage.clear();
                                         sessionStorage.clear();
-                                        window.location.href = '../../login.html';
+                                        window.location.href = 'login.html';
                                     }, 1500);
                                 } else {
                                     $.unblockUI();
