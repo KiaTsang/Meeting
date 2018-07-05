@@ -253,7 +253,7 @@ var login = function () {
                             dataType: "json",
                             beforeSend: function(jqXHR, settings) {
                                 $.blockUI({
-                                    message: '<div class="progress progress-lg progress-striped active" style="margin-bottom: 0px;">' +
+                                    message: '<div class="progress progress-lg progress-striped active" style="margin-bottom: 0px;height: 25px">' +
                                         '<div style="width: 100%" role="progressbar" class="progress-bar bg-color-darken">' +
                                         '<span id="processStatus" style="position: relative; top: 5px;font-size:15px;">正在处理，请稍后...</span></div>' +
                                         '</div>'

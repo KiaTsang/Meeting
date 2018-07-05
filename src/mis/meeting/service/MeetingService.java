@@ -312,6 +312,13 @@ public class MeetingService extends BaseService {
 				tmpMessageSendCenterEntity.setIsActive(inMeetingDTO.getIsSendMessageNotice());
 				this.meetingDAO.update(tmpMessageSendCenterEntity);
 			}
+		} else {
+			if (tmpMessageSendCenterEntity != null) {
+				tmpMessageSendCenterEntity.setSendMessage(inMeetingDTO.getMeetingSubject());
+				tmpMessageSendCenterEntity.setSendDatetime(inMeetingDTO.getMessageNoticeTime());
+				tmpMessageSendCenterEntity.setIsActive(inMeetingDTO.getIsSendMessageNotice());
+				this.meetingDAO.update(tmpMessageSendCenterEntity);
+			}
 		}
 		
 		// 清空作业任务

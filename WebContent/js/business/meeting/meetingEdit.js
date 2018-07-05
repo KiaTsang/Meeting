@@ -952,10 +952,18 @@ var meetingEdit = function () {
         $('input[name="isSendMessageNotice"]').on('click', function (e) {
             if (this.checked) {
                 $('input[name="noticeTypeId"]').attr('disabled',false);
-                $("#messageNoticeTime").attr('disabled',false);
+                $('#createMeetingForm :radio').each(function(){
+                    if(this.checked){
+                        if ( this.value == "0")
+                            $("#messageNoticeTime").attr('disabled',true);
+                        else
+                            $("#messageNoticeTime").attr('disabled',false);
+                    }
+                });
             } else {
                 $('input[name="noticeTypeId"]').attr('disabled',true);
                 $("#messageNoticeTime").attr('disabled',true);
+                $("#messageNoticeTime").val("");
             }
         });
     }
