@@ -245,9 +245,19 @@ var meetingEdit = function () {
                 var meetingId = $('input[name="meetingId"]').val();
                 var isSendMessageNotice = $('input[name="isSendMessageNotice"]').prop('checked');
                 var addData = DomUtil.getJSONObjectFromForm('createMeetingForm', null);
-                if (isSendMessageNotice && $('input[name="noticeTypeId"]').val() == "1" && addData.messageNoticeTime == '') {
+
+                if(new Date($("#meetingStartTime").val()) > (new Date($("#meetingEndTime").val()))) {
+                    $.pnotify({
+                        text: '会议开始时间不能晚于会议结束时间'
+                    });
+                } else if (isSendMessageNotice && $("input[name='noticeTypeId']:checked").val() == "1" && addData.messageNoticeTime == '') {
                     $.pnotify({
                         text: '指定提醒时间不能为空'
+                    });
+                } else if (isSendMessageNotice && $("input[name='noticeTypeId']:checked").val() == "1"
+                    && (new Date(addData.messageNoticeTime) > (new Date($("#meetingStartTime").val())))) {
+                    $.pnotify({
+                        text: '指定提醒时间不能晚于会议开始时间'
                     });
                 } else {
                     // 添加会议记录附件表格记录
@@ -930,6 +940,12 @@ var meetingEdit = function () {
     }
 
     var handleRadio = function () {
+        // 初始化复选框
+        if (!$('input[name="isSendMessageNotice"]').prop('checked')) {
+            $('input[name="noticeTypeId"]').attr('disabled',true);
+            $("#messageNoticeTime").attr('disabled',true);
+        }
+
         // 初始化radio
         $('#createMeetingForm :radio').each(function(){
             if(this.checked){
@@ -952,14 +968,19 @@ var meetingEdit = function () {
         $('input[name="isSendMessageNotice"]').on('click', function (e) {
             if (this.checked) {
                 $('input[name="noticeTypeId"]').attr('disabled',false);
-                $('#createMeetingForm :radio').each(function(){
-                    if(this.checked){
-                        if ( this.value == "0")
-                            $("#messageNoticeTime").attr('disabled',true);
-                        else
-                            $("#messageNoticeTime").attr('disabled',false);
-                    }
-                });
+                if($("input[name='noticeTypeId']:checked").val() == "0") {
+                    $("#messageNoticeTime").attr('disabled',true);
+                } else {
+                    $("#messageNoticeTime").attr('disabled',false);
+                }
+//                $('#createMeetingForm :radio').each(function(){
+//                    if(this.checked){
+//                        if ( this.value == "0")
+//                            $("#messageNoticeTime").attr('disabled',true);
+//                        else
+//                            $("#messageNoticeTime").attr('disabled',false);
+//                    }
+//                });
             } else {
                 $('input[name="noticeTypeId"]').attr('disabled',true);
                 $("#messageNoticeTime").attr('disabled',true);

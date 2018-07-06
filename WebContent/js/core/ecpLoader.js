@@ -60,8 +60,8 @@
 //        'js/util/Cookie.js',
 //        'js/util/I18n.js',
         'js/core/globalInfo.js',
-        'js/core/globalInfoLoader.js'
-//        'js/login.js'
+        'js/core/globalInfoLoader.js',
+        'js/login.js'
     ];
 	
 	function loadAllJS(array){
