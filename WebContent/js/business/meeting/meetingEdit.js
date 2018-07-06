@@ -76,6 +76,7 @@ var meetingEdit = function () {
                             || JSON.parse(sessionStorage.getItem("EmployeeDTO")).roleIdList.indexOf('0') > -1
                             || JSON.parse(sessionStorage.getItem("EmployeeDTO")).employeeId == tmpJsonObject.meetingCreator) {
                         } else {
+                            $('input[name="noticeTypeId"]').attr('disabled',true);
                             $('input,select,textarea',$('#createMeetingForm')).attr('readonly',true);
                             $('#meetingFileUploadBtn,#meetingRecordFileUploadBtn').attr('readonly',false);
                             $("#messageNoticeTime,#meetingStartTime,#meetingEndTime,#meetingProposeTime,#meetingJoiner").attr('disabled',true);
