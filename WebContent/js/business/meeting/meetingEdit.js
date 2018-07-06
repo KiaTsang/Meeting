@@ -944,17 +944,20 @@ var meetingEdit = function () {
         if (!$('input[name="isSendMessageNotice"]').prop('checked')) {
             $('input[name="noticeTypeId"]').attr('disabled',true);
             $("#messageNoticeTime").attr('disabled',true);
+        } else {
+            if ($("input[name='noticeTypeId']:checked").val() == "0")
+                $("#messageNoticeTime").attr('disabled',true);
         }
 
         // 初始化radio
-        $('#createMeetingForm :radio').each(function(){
-            if(this.checked){
-                if ( this.value == "0")
-                    $("#messageNoticeTime").attr('disabled',true);
-                else
-                    $("#messageNoticeTime").attr('disabled',false);
-            }
-        });
+//        $('#createMeetingForm :radio').each(function(){
+//            if(this.checked){
+//                if ( this.value == "0")
+//                    $("#messageNoticeTime").attr('disabled',true);
+//                else
+//                    $("#messageNoticeTime").attr('disabled',false);
+//            }
+//        });
 
         $('input[name="noticeTypeId"]').on('click', function (e) {
            if(this.value == "0") {
