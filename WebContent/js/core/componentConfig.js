@@ -1,15 +1,3 @@
-/**
- * FileName: componentConfig.js
- *
- * File description goes here.
- *
- * Copyright (c) 2015 IASPEC, Inc. All Rights Reserved.
- *
- * @author <a href="mailto:qiqu.huang@iaspec.net">Charlie Huang</a>
- * @Version: 1.0.0
- * @DateTime: 2015-03-10
- */
-
 Eipd.namespace("config").summernote = {
     height : 180,
     tabsize : 2,

@@ -1,15 +1,3 @@
-/**
- * FileName: issuescard.js
- *
- * File description goes here.
- *
- * Copyright (c) 2010 Asiasoft, Inc. All Rights Reserved.
- *
- * @author <a href="mailto:qiqu.huang@iaspec.net">Charlie Huang</a>
- * @Version: 1.0.0
- * @DateTime: 2014-07-09
- */
-
 var common = function() {
 
   return {

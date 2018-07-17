@@ -1,15 +1,3 @@
-/**
- * FileName: validate.cus.js
- *
- * File description goes here.
- *
- * Copyright (c) 2010 Asiasoft, Inc. All Rights Reserved.
- *
- * @author <a href="mailto:li.zhou@iaspec.net">Charlie</a>
- * @Version: 1.0.0
- * @DateTime: 2014-07-10
- */
-
 var validator = (function() {
     return {
         _modifiedFieldCounts: {},
